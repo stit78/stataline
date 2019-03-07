@@ -10,10 +10,76 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_06_154652) do
+ActiveRecord::Schema.define(version: 2019_03_06_161506) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "continents", force: :cascade do |t|
+    t.string "name"
+    t.string "prefixe"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "countries", force: :cascade do |t|
+    t.string "name"
+    t.string "prefixe"
+    t.bigint "continent_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["continent_id"], name: "index_countries_on_continent_id"
+  end
+
+  create_table "elements", force: :cascade do |t|
+    t.float "value"
+    t.bigint "country_id"
+    t.bigint "indicator_id"
+    t.bigint "year_id"
+    t.bigint "unit_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["country_id"], name: "index_elements_on_country_id"
+    t.index ["indicator_id"], name: "index_elements_on_indicator_id"
+    t.index ["unit_id"], name: "index_elements_on_unit_id"
+    t.index ["year_id"], name: "index_elements_on_year_id"
+  end
+
+  create_table "indicators", force: :cascade do |t|
+    t.string "name"
+    t.bigint "subtopic_id"
+    t.bigint "source_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["source_id"], name: "index_indicators_on_source_id"
+    t.index ["subtopic_id"], name: "index_indicators_on_subtopic_id"
+  end
+
+  create_table "sources", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "subtopics", force: :cascade do |t|
+    t.string "name"
+    t.bigint "topic_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["topic_id"], name: "index_subtopics_on_topic_id"
+  end
+
+  create_table "topics", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "units", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -27,4 +93,18 @@ ActiveRecord::Schema.define(version: 2019_03_06_154652) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "years", force: :cascade do |t|
+    t.integer "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_foreign_key "countries", "continents"
+  add_foreign_key "elements", "countries"
+  add_foreign_key "elements", "indicators"
+  add_foreign_key "elements", "units"
+  add_foreign_key "elements", "years"
+  add_foreign_key "indicators", "sources"
+  add_foreign_key "indicators", "subtopics"
+  add_foreign_key "subtopics", "topics"
 end
