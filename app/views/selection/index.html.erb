@@ -1,3 +1,13 @@
 <h1> coucou</h1>
 
-<%=  %>
+<%= simple_form_for @new_request, url: create_path, method: :post do |f| %>
+  <%= f.input :topic, collection: @topic, label_method: :name, value_method: :id %>
+  <br>
+  <%= f.input :subtopic, collection: @subtopic, label_method: :name, value_method: :id %>
+  <br>
+  <%= f.input :indicator, collection: @indicators, label_method: :name, value_method: :id %>
+  <br>
+  <%= f.input :country, collection: @countries, label_method: :name, value_method: :id %>
+  <br>
+  <%= f.submit "Create", class: "btn btn-primary" %>
+<% end %>

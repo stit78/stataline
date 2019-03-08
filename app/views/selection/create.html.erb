@@ -1,0 +1,9 @@
+<h1>yo yo yo</h1>
+<p><%= @element.country.name %></p>
+<p><%= @element.indicator.subtopic.topic.name %> : <%= @element.indicator.subtopic.name %></p>
+<p><%= @element.indicator.name %></p>
+<ul>
+<% @element_clear.each do |year, value| %>
+  <li><%= year %>: <%= value %></li>
+<% end %>
+</ul>
